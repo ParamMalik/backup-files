@@ -15,11 +15,20 @@ public class AppController {
 
     private final EncryptorB encryptorB;
 
-    private static final String PUBLIC_KEY_FILE = "D:\\EncryptorB\\NASA FCU.asc";
-    private static final String INPUT_FILE_NAME = "D:\\EncryptorB\\textFileToEncrypt.txt";
-    private static final String OUTPUT_FILE_NAME = "D:\\EncryptorB\\EncryptedFile.bpg";
+    // client public key
+//    private static final String PUBLIC_KEY_FILE = "D:\\Development\\PGP Encryption\\backup-files\\EncryptorB\\NASA FCU.asc";
 
-    @GetMapping
+    // test public key
+    private static final String PUBLIC_KEY_FILE = "D:\\Development\\PGP Encryption\\backup-files\\EncryptorB\\IITCorporation_1024.asc";
+
+    // txt file
+    //    private static final String INPUT_FILE_NAME = "D:\\Development\\PGP Encryption\\backup-files\\EncryptorB\\textToEncrypt.txt";
+
+    // csv file
+    private static final String INPUT_FILE_NAME = "D:\\Development\\PGP Encryption\\backup-files\\EncryptorB\\textFileToEncrypt.csv";
+    private static final String OUTPUT_FILE_NAME = "D:\\Development\\PGP Encryption\\backup-files\\EncryptorB\\EncryptedFile.bpg";
+
+    @GetMapping("/encrypt")
     public ResponseEntity<String> getFile() throws Exception {
 
 

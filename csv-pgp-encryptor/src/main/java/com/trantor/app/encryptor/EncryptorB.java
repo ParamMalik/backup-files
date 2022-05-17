@@ -34,8 +34,8 @@ public class EncryptorB {
         // Other settings
         boolean armor = true;
 
-//        boolean integrityCheck = false;
-        encryptFile(outputFile, inputFilePath, pubKey, armor);
+        boolean integrityCheck = true;
+        encryptFile(outputFile, inputFilePath, pubKey, armor, integrityCheck);
     }
 
     private PGPPublicKey readPublicKey(InputStream paramInputStream) throws IOException, PGPException {
@@ -55,14 +55,14 @@ public class EncryptorB {
     }
 
     private void encryptFile(OutputStream outputStream, String fileToEncrypt,
-                             PGPPublicKey paramPGPPublicKey, boolean armor)
+                             PGPPublicKey paramPGPPublicKey, boolean armor, boolean integrityCheck)
             throws IOException, NoSuchProviderException {
         if (armor)
             outputStream = new ArmoredOutputStream(outputStream);
         try {
             byte[] arrayOfByte = compressFile(fileToEncrypt);
 
-            PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(SymmetricKeyAlgorithmTags.AES_256, new SecureRandom(), "BC");
+            PGPEncryptedDataGenerator encryptedDataGenerator = new PGPEncryptedDataGenerator(SymmetricKeyAlgorithmTags.AES_256, integrityCheck, new SecureRandom(), "BC");
             encryptedDataGenerator.addMethod(paramPGPPublicKey);
 
             try (OutputStream localOutputStream = encryptedDataGenerator.open(outputStream, arrayOfByte.length);) {
@@ -81,7 +81,7 @@ public class EncryptorB {
 
     private byte[] compressFile(String paramString) throws IOException {
         ByteArrayOutputStream localByteArrayOutputStream = new ByteArrayOutputStream();
-        PGPCompressedDataGenerator localPGPCompressedDataGenerator = new PGPCompressedDataGenerator(0);
+        PGPCompressedDataGenerator localPGPCompressedDataGenerator = new PGPCompressedDataGenerator(1);
         PGPUtil.writeFileToLiteralData(localPGPCompressedDataGenerator.open(localByteArrayOutputStream), 'b',
                 new File(paramString));
         localPGPCompressedDataGenerator.close();
